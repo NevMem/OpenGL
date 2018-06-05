@@ -36,13 +36,12 @@ int main(void) {
 
     cout << glGetString(GL_VERSION) << endl;
 
-    unsigned int shader = CreateShader("resources/shaders/basicVertexShader.glsl", "resources/shaders/basicFragmentShader.glsl");
+    ShaderProgram mainShader;
+    mainShader.initByFiles("resources/shaders/basicVertexShader.glsl", "resources/shaders/basicFragmentShader.glsl");
 
     VertexArrayObject vao;
     vao.init();
     vao.bind();
-
-    glUseProgram(shader);
 
     VertexBuffer vb = VertexBuffer();
     vb.init();
@@ -61,11 +60,15 @@ int main(void) {
     ib.unbind();
 
     while (!glfwWindowShouldClose(window)){
+    	mainShader.start();
+
     	glClearColor(.2, .4, .8, 1.);
     	glClear(GL_COLOR_BUFFER_BIT);
 
     	vao.bind();
     	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+    	mainShader.stop();
 
         glfwSwapBuffers(window);
         glfwPollEvents();

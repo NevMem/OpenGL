@@ -1,4 +1,7 @@
+#include "ShaderProgram.h"
 #include <string>
+#include <iostream>
+#include <fstream>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 using namespace std;
@@ -28,21 +31,7 @@ unsigned int CompileShader(unsigned int shaderType, string shaderText){
 	return shader;
 }
 
-unsigned int CreateShader(string vShaderFile, string fShaderFile){\
-	string s;
-	ifstream ln(vShaderFile);
-
-	string vShaderText = "", fShaderText = "";
-
-	while(getline(ln, s, '\n')){
-		vShaderText += s + '\n';
-	}
-
-	ln = ifstream(fShaderFile);
-	while(getline(ln, s, '\n')){
-		fShaderText += s + '\n';
-	}
-
+unsigned int CreateShader(string vShaderText, string fShaderText){
 	unsigned int vShader = CompileShader(GL_VERTEX_SHADER, vShaderText);
 	unsigned int fShader = CompileShader(GL_FRAGMENT_SHADER, fShaderText);
 
@@ -64,4 +53,41 @@ unsigned int CreateShader(string vShaderFile, string fShaderFile){\
 	glDeleteShader(fShader);
 
 	return program;
+}
+
+unsigned int CreateShaderFromFiles(string vShaderFile, string fShaderFile){
+	string s;
+	ifstream ln(vShaderFile);
+
+	string vShaderText = "", fShaderText = "";
+
+	while(getline(ln, s, '\n')){
+		vShaderText += s + '\n';
+	}
+
+	ln = ifstream(fShaderFile);
+	while(getline(ln, s, '\n')){
+		fShaderText += s + '\n';
+	}
+
+	return CreateShader(vShaderText, fShaderText);
+}
+
+void ShaderProgram::init(string vertexShaderText, string fragmentShaderText){
+	id = CreateShader(vertexShaderText, fragmentShaderText);
+	cout << id << endl;
+}
+
+
+void ShaderProgram::initByFiles(string vertexShaderFile, string fragmentShaderFile){
+	id = CreateShaderFromFiles(vertexShaderFile, fragmentShaderFile);
+	cout << id << endl;
+}
+
+void ShaderProgram::start(){
+	glUseProgram(id);
+}
+
+void ShaderProgram::stop(){
+	glUseProgram(0);
 }

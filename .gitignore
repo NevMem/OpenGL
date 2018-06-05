@@ -1,0 +1,7 @@
+glfw-3.2.1/*
+glfw-build/*
+include/*
+libs/*
+*.dll
+*.exe
+run.cmd

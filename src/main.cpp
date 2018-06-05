@@ -68,7 +68,9 @@ int main(void) {
     vb.unbind();
     ib.unbind();
 
-    glm::mat4 projectionMatrix = glm::frustum(-1., 1., -1., 1., -1., 1000.);
+    double aspectRatio = 1024. / 768.;
+
+    glm::mat4 projectionMatrix = glm::frustum(-1., 1., -1. / aspectRatio, 1. / aspectRatio, .1, 1000.);
     mainShader.start();
 	mainShader.uniformMatrix4f(matrixLocation, &projectionMatrix[0][0]);	
     mainShader.stop();

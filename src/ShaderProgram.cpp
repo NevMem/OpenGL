@@ -75,13 +75,11 @@ unsigned int CreateShaderFromFiles(string vShaderFile, string fShaderFile){
 
 void ShaderProgram::init(string vertexShaderText, string fragmentShaderText){
 	id = CreateShader(vertexShaderText, fragmentShaderText);
-	cout << id << endl;
 }
 
 
 void ShaderProgram::initByFiles(string vertexShaderFile, string fragmentShaderFile){
 	id = CreateShaderFromFiles(vertexShaderFile, fragmentShaderFile);
-	cout << id << endl;
 }
 
 void ShaderProgram::start(){
@@ -90,4 +88,29 @@ void ShaderProgram::start(){
 
 void ShaderProgram::stop(){
 	glUseProgram(0);
+}
+
+unsigned int ShaderProgram::getUniformLocation(string name){
+	unsigned int res = glGetUniformLocation(id, name.c_str());
+	return res;
+}
+
+void ShaderProgram::uniform1f(unsigned int location, float a){
+	glUniform1f(location, a);
+}
+
+void ShaderProgram::uniform2f(unsigned int location, float a, float b){
+	glUniform2f(location, a, b);
+}
+
+void ShaderProgram::uniform3f(unsigned int location, float a, float b, float c){
+	glUniform3f(location, a, b, c);
+}
+
+void ShaderProgram::uniform4f(unsigned int location, float a, float b, float c, float d){
+	glUniform4f(location, a, b, c, d);
+}
+
+void ShaderProgram::uniformMatrix4f(unsigned int location, float *pointer){
+	glUniformMatrix4fv(location, 1, false, pointer);
 }

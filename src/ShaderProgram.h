@@ -15,4 +15,12 @@ public:
 
 	void start();
 	void stop();
+
+	unsigned int getUniformLocation(string name);
+	void uniform1f(unsigned int location, float a);
+	void uniform2f(unsigned int location, float a, float b);
+	void uniform3f(unsigned int location, float a, float b, float c);
+	void uniform4f(unsigned int location, float a, float b, float c, float d);
+
+	void uniformMatrix4f(unsigned int location, float *pointer);
 };

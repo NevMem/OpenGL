@@ -13,10 +13,10 @@
 using namespace std;
 
 float vr[] = {
-	-.5, .5, .0, 
-	-.5, -.5, .0, 
-	.5, -.5, .0, 
-	.5, .5, .0, 	
+	-.5, .5, -1.0, 
+	-.5, -.5, -1.0, 
+	.5, -.5, -1.0, 
+	.5, .5, -1.0, 	
 };
 
 unsigned int idx[] = {
@@ -45,6 +45,9 @@ int main(void) {
     ShaderProgram mainShader;
     mainShader.initByFiles("resources/shaders/basicVertexShader.glsl", "resources/shaders/basicFragmentShader.glsl");
 
+    auto loc = mainShader.getUniformLocation("uTime");
+    auto matrixLocation = mainShader.getUniformLocation("mtrx");
+
     VertexArrayObject vao;
     vao.init();
     vao.bind();
@@ -65,8 +68,14 @@ int main(void) {
     vb.unbind();
     ib.unbind();
 
+    glm::mat4 projectionMatrix = glm::frustum(-1., 1., -1., 1., -1., 1000.);
+    mainShader.start();
+	mainShader.uniformMatrix4f(matrixLocation, &projectionMatrix[0][0]);	
+    mainShader.stop();
+
     while (!glfwWindowShouldClose(window)){
     	mainShader.start();
+    	mainShader.uniform1f(loc, glfwGetTime());
 
     	glClearColor(.2, .4, .8, 1.);
     	glClear(GL_COLOR_BUFFER_BIT);

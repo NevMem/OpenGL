@@ -38,6 +38,12 @@ int main(void) {
 
     unsigned int shader = CreateShader("resources/shaders/basicVertexShader.glsl", "resources/shaders/basicFragmentShader.glsl");
 
+    VertexArrayObject vao;
+    vao.init();
+    vao.bind();
+
+    glUseProgram(shader);
+
     VertexBuffer vb = VertexBuffer();
     vb.init();
     vb.bufferData(vr, 12);
@@ -49,12 +55,16 @@ int main(void) {
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
 
+    vao.unbind();
+
+    vb.unbind();
+    ib.unbind();
+
     while (!glfwWindowShouldClose(window)){
     	glClearColor(.2, .4, .8, 1.);
     	glClear(GL_COLOR_BUFFER_BIT);
 
-    	ib.bind();
-    	vb.bind();
+    	vao.bind();
     	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
         glfwSwapBuffers(window);

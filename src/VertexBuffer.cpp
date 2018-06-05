@@ -16,3 +16,7 @@ void VertexBuffer::bufferData(float *data, int length){
 void VertexBuffer::bind(){
 	glBindBuffer(GL_ARRAY_BUFFER, id);
 }
+
+void VertexBuffer::unbind(){
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+}

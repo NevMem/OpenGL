@@ -16,3 +16,7 @@ void IndexBuffer::bufferData(unsigned int *data, int length){
 void IndexBuffer::bind(){
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id);
 }
+
+void IndexBuffer::unbind(){
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+}

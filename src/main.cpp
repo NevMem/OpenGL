@@ -43,17 +43,26 @@ void initializeCube(){
 	value3f(vr + 18, 1, 1, -2);
 	value3f(vr + 21, 0, 1, -2);
 
-	idxSize = 6;
+	idxSize = 36;
 	idx = new unsigned int[idxSize];
 
 	value1ui(idx, 0); value1ui(idx + 1, 1); value1ui(idx + 2, 2);
 	value1ui(idx + 3, 0); value1ui(idx + 4, 2); value1ui(idx + 5, 3);
 
-	//value1ui(idx + 6, 0); value1ui(idx + 7, 3); value1ui(idx + 8, 7);
-	//value1ui(idx + 9, 7); value1ui(idx + 10, 0); value1ui(idx + 11, 4);
+	value1ui(idx + 6, 0); value1ui(idx + 7, 7); value1ui(idx + 8, 3);
+	value1ui(idx + 9, 7); value1ui(idx + 10, 0); value1ui(idx + 11, 4);
 
-	//value1ui(idx + 12, 7); value1ui(idx + 13, 4); value1ui(idx + 14, 5);
-	//value1ui(idx + 15, 7); value1ui(idx + 16, 5); value1ui(idx + 17, 6);
+	value1ui(idx + 12, 7); value1ui(idx + 13, 4); value1ui(idx + 14, 5);
+	value1ui(idx + 15, 7); value1ui(idx + 16, 5); value1ui(idx + 17, 6);
+
+	value1ui(idx + 18, 6); value1ui(idx + 19, 5); value1ui(idx + 20, 2);
+	value1ui(idx + 21, 2); value1ui(idx + 22, 5); value1ui(idx + 23, 1);
+
+	value1ui(idx + 24, 4); value1ui(idx + 25, 0); value1ui(idx + 26, 1);
+	value1ui(idx + 27, 4); value1ui(idx + 28, 5); value1ui(idx + 29, 1);
+
+	value1ui(idx + 30, 7); value1ui(idx + 31, 3); value1ui(idx + 32, 2);
+	value1ui(idx + 33, 7); value1ui(idx + 34, 6); value1ui(idx + 35, 2);
 }
 
 int main(void) {
@@ -122,7 +131,7 @@ int main(void) {
     	glClear(GL_COLOR_BUFFER_BIT);
 
     	vao.bind();
-    	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    	glDrawElements(GL_TRIANGLES, idxSize, GL_UNSIGNED_INT, 0);
 
     	mainShader.stop();
 

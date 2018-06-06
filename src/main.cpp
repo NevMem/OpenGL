@@ -4,7 +4,7 @@
 #include <fstream>
 
 #include "includes.h"
-#include "constants.h"
+#include "variables.h"
 
 #include <glm/vec3.hpp>
 #include <glm/vec4.hpp>
@@ -65,6 +65,13 @@ void initializeCube(){
 	value1ui(idx + 33, 7); value1ui(idx + 34, 6); value1ui(idx + 35, 2);
 }
 
+void mouseButtonCallback(GLFWwindow *window, int button, int action, int mods){
+	if(button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS){
+		double xpos, ypos;
+		glfwGetCursorPos(window, &xpos, &ypos);
+	}
+}	
+
 int main(void) {
 	initializeCube();
 
@@ -112,7 +119,7 @@ int main(void) {
     vb.unbind();
     ib.unbind();
 
-    double aspectRatio = 1024. / 768.;
+    double aspectRatio = (double) DEFAULT_SCREEN_WIDTH / DEFAULT_SCREEN_HEIGHT;
 
     glm::mat4 projectionMatrix = glm::frustum(-1., 1., -1. / aspectRatio, 1. / aspectRatio, 1., 1000.);
     glm::mat4 worldMatrix = glm::translate(glm::mat4(1.0), glm::vec3(.5, 0, -1.));
@@ -121,8 +128,11 @@ int main(void) {
 	mainShader.uniformMatrix4f(worldMatrixLocation, &worldMatrix[0][0]);
     mainShader.stop();
 
+    glfwSetMouseButtonCallback(window, mouseButtonCallback);
+
     while (!glfwWindowShouldClose(window)){
-    	glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+    	if (WIRED_MODE)
+    		glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
 
     	mainShader.start();
     	mainShader.uniform1f(loc, glfwGetTime());

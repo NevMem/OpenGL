@@ -72,6 +72,10 @@ void mouseButtonCallback(GLFWwindow *window, int button, int action, int mods){
 	}
 }	
 
+void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods){
+	cout << key << ' ' << scancode << ' ' << action << ' ' << mods << endl;
+}
+
 int main(void) {
 	initializeCube();
 
@@ -129,6 +133,7 @@ int main(void) {
     mainShader.stop();
 
     glfwSetMouseButtonCallback(window, mouseButtonCallback);
+    glfwSetKeyCallback(window, keyCallback);
 
     while (!glfwWindowShouldClose(window)){
     	if (WIRED_MODE)

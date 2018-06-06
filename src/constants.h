@@ -1,0 +1,4 @@
+#define MY_CONSTANTS
+
+const int DEFAULT_SCREEN_WIDTH = 1024;
+const int DEFAULT_SCREEN_HEIGHT = 768;

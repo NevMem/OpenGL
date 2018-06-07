@@ -2,3 +2,4 @@
 #include "IndexBuffer.h"
 #include "VertexArrayObject.h"
 #include "ShaderProgram.h"
+#include "Camera.h"

@@ -3,8 +3,9 @@
 in vec3 position;
 uniform mat4 mtrx;
 uniform mat4 worldMatrix;
+uniform mat4 eyeMatrix;
 uniform float uTime;
 
 void main(){
-	gl_Position = mtrx * worldMatrix * vec4(position, 1.);	
+	gl_Position = mtrx * eyeMatrix * worldMatrix * vec4(position, 1.);	
 }

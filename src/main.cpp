@@ -72,9 +72,18 @@ void mouseButtonCallback(GLFWwindow *window, int button, int action, int mods){
 	}
 }	
 
+Camera mainCamera;
+
 void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods){
-	cout << key << ' ' << scancode << ' ' << action << ' ' << mods << endl;
+	if(key == GLFW_KEY_W && (action == GLFW_PRESS || action == GLFW_REPEAT)){
+		mainCamera.move(glm::vec3(0, 0, -.1));	
+	}
+	if(key == GLFW_KEY_S && (action == GLFW_PRESS || action == GLFW_REPEAT)){
+		mainCamera.move(glm::vec3(0, 0, .1));
+	}
 }
+
+glm::mat4 projectionMatrix, worldMatrix, eyeMatrix;
 
 int main(void) {
 	initializeCube();
@@ -102,6 +111,7 @@ int main(void) {
     auto loc = mainShader.getUniformLocation("uTime");
     auto matrixLocation = mainShader.getUniformLocation("mtrx");
     auto worldMatrixLocation = mainShader.getUniformLocation("worldMatrix");
+    auto eyeMatrixLocation = mainShader.getUniformLocation("eyeMatrix");
 
     VertexArrayObject vao;
     vao.init();
@@ -125,8 +135,9 @@ int main(void) {
 
     double aspectRatio = (double) DEFAULT_SCREEN_WIDTH / DEFAULT_SCREEN_HEIGHT;
 
-    glm::mat4 projectionMatrix = glm::frustum(-1., 1., -1. / aspectRatio, 1. / aspectRatio, 1., 1000.);
-    glm::mat4 worldMatrix = glm::translate(glm::mat4(1.0), glm::vec3(.5, 0, -1.));
+    projectionMatrix = glm::frustum(-1., 1., -1. / aspectRatio, 1. / aspectRatio, 1., 1000.);
+    worldMatrix = glm::translate(glm::mat4(1.0), glm::vec3(.5, 0, -1.));
+
     mainShader.start();
 	mainShader.uniformMatrix4f(matrixLocation, &projectionMatrix[0][0]);	
 	mainShader.uniformMatrix4f(worldMatrixLocation, &worldMatrix[0][0]);
@@ -140,6 +151,7 @@ int main(void) {
     		glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
 
     	mainShader.start();
+    	mainShader.uniformMatrix4f(eyeMatrixLocation, mainCamera.getEyeMatrix());
     	mainShader.uniform1f(loc, glfwGetTime());
 
     	glClearColor(.2, .4, .8, 1.);

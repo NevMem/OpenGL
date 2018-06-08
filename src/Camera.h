@@ -6,9 +6,9 @@ using namespace std;
 
 class Camera {
 private:
-	glm::vec3 eye;
-	glm::vec3 look;
-	glm::vec3 up;
+	glm::vec4 eye;
+	glm::vec4 look;
+	glm::vec4 up;
 
 	glm::mat4 lookAtMatrix;
 
@@ -17,7 +17,8 @@ public:
 	~Camera(){}
 
 	void move(glm::vec3 m);
+	void rotateHorizontal(float angle);
+	void rotateVertical(float angle);
 
-	float *getEyePointer();
 	float *getEyeMatrix();
 };

@@ -65,14 +65,35 @@ void initializeCube(){
 	value1ui(idx + 33, 7); value1ui(idx + 34, 6); value1ui(idx + 35, 2);
 }
 
+Camera mainCamera;
+bool isDragging = false;
+double dragX, dragY;
+
 void mouseButtonCallback(GLFWwindow *window, int button, int action, int mods){
 	if(button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS){
 		double xpos, ypos;
 		glfwGetCursorPos(window, &xpos, &ypos);
+
+		isDragging = true;
+		dragX = xpos;
+		dragY = ypos;
+	}
+
+	if(button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE){
+		isDragging = false;
 	}
 }	
 
-Camera mainCamera;
+void mouseCallback(GLFWwindow *window, double xpos, double ypos){
+	if(isDragging){
+		double deltaX = xpos - dragX;
+		double deltaY = ypos - dragY;
+		dragX = xpos;
+		dragY = ypos;
+		mainCamera.rotateHorizontal(deltaX / DEFAULT_SCREEN_WIDTH);
+		mainCamera.rotateVertical(deltaY / DEFAULT_SCREEN_HEIGHT);
+	}
+}
 
 void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods){
 	if(key == GLFW_KEY_W && (action == GLFW_PRESS || action == GLFW_REPEAT)){
@@ -80,6 +101,18 @@ void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods
 	}
 	if(key == GLFW_KEY_S && (action == GLFW_PRESS || action == GLFW_REPEAT)){
 		mainCamera.move(glm::vec3(0, 0, .1));
+	}
+	if(key == GLFW_KEY_RIGHT && (action == GLFW_PRESS || action == GLFW_REPEAT)){
+		mainCamera.rotateHorizontal(-acos(-1) / 36);
+	}
+	if(key == GLFW_KEY_LEFT && (action == GLFW_PRESS || action == GLFW_REPEAT)){
+		mainCamera.rotateHorizontal(acos(-1) / 36);
+	}
+	if(key == GLFW_KEY_UP && (action == GLFW_PRESS || action == GLFW_REPEAT)){
+		mainCamera.rotateVertical(acos(-1) / 36);
+	}
+	if(key == GLFW_KEY_DOWN && (action == GLFW_PRESS || action == GLFW_REPEAT)){
+		mainCamera.rotateVertical(-acos(-1) / 36);
 	}
 }
 
@@ -135,7 +168,7 @@ int main(void) {
 
     double aspectRatio = (double) DEFAULT_SCREEN_WIDTH / DEFAULT_SCREEN_HEIGHT;
 
-    projectionMatrix = glm::frustum(-1., 1., -1. / aspectRatio, 1. / aspectRatio, 1., 1000.);
+    projectionMatrix = glm::perspective(45.0f, (float)aspectRatio, .1f, 1000.f);
     worldMatrix = glm::translate(glm::mat4(1.0), glm::vec3(.5, 0, -1.));
 
     mainShader.start();
@@ -144,6 +177,7 @@ int main(void) {
     mainShader.stop();
 
     glfwSetMouseButtonCallback(window, mouseButtonCallback);
+    glfwSetCursorPosCallback(window, mouseCallback);
     glfwSetKeyCallback(window, keyCallback);
 
     while (!glfwWindowShouldClose(window)){

@@ -6,3 +6,5 @@ bin/*
 *.dll
 *.exe
 *.cmd
+builder.py
+compile_settings.json

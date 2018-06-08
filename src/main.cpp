@@ -29,42 +29,6 @@ void value1ui(unsigned int *location, unsigned int value){
 	*location = value;
 }
 
-void initializeCube(){
-	vrSize = 3 * 8;
-	vr = new float[vrSize];
-
-	value3f(vr, 0, 0, -1);
-	value3f(vr + 3, 1, 0, -1);
-	value3f(vr + 6, 1, 1, -1);
-	value3f(vr + 9, 0, 1, -1);
-
-	value3f(vr + 12, 0, 0, -2);
-	value3f(vr + 15, 1, 0, -2);
-	value3f(vr + 18, 1, 1, -2);
-	value3f(vr + 21, 0, 1, -2);
-
-	idxSize = 36;
-	idx = new unsigned int[idxSize];
-
-	value1ui(idx, 0); value1ui(idx + 1, 1); value1ui(idx + 2, 2);
-	value1ui(idx + 3, 0); value1ui(idx + 4, 2); value1ui(idx + 5, 3);
-
-	value1ui(idx + 6, 0); value1ui(idx + 7, 7); value1ui(idx + 8, 3);
-	value1ui(idx + 9, 7); value1ui(idx + 10, 0); value1ui(idx + 11, 4);
-
-	value1ui(idx + 12, 7); value1ui(idx + 13, 4); value1ui(idx + 14, 5);
-	value1ui(idx + 15, 7); value1ui(idx + 16, 5); value1ui(idx + 17, 6);
-
-	value1ui(idx + 18, 6); value1ui(idx + 19, 5); value1ui(idx + 20, 2);
-	value1ui(idx + 21, 2); value1ui(idx + 22, 5); value1ui(idx + 23, 1);
-
-	value1ui(idx + 24, 4); value1ui(idx + 25, 0); value1ui(idx + 26, 1);
-	value1ui(idx + 27, 4); value1ui(idx + 28, 5); value1ui(idx + 29, 1);
-
-	value1ui(idx + 30, 7); value1ui(idx + 31, 3); value1ui(idx + 32, 2);
-	value1ui(idx + 33, 7); value1ui(idx + 34, 6); value1ui(idx + 35, 2);
-}
-
 Camera mainCamera;
 bool isDragging = false;
 double dragX, dragY;
@@ -118,8 +82,23 @@ void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods
 
 glm::mat4 projectionMatrix, worldMatrix, eyeMatrix;
 
-int main(void) {
-	initializeCube();
+int main(int argc, char **argv) {
+	auto model = ModelLoader::loadModel("models/monkey.obj");
+	cout << model.first.size() << ' ' << model.second.size() << endl;
+
+	vr = new float[model.first.size()];
+	vrSize = model.first.size();
+
+	idx = new unsigned int[model.second.size()];
+	idxSize = model.second.size();
+
+	for(int i = 0;i < model.first.size();i++){
+		vr[i] = model.first[i];
+	}
+
+	for(int i = 0;i < model.second.size();i++){
+		idx[i] = model.second[i];
+	}
 
     GLFWwindow* window;
     if (!glfwInit())
@@ -159,7 +138,10 @@ int main(void) {
     ib.bufferData(idx, idxSize);
 
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(0 * sizeof(float)));
+
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
 
     vao.unbind();
 
@@ -180,6 +162,8 @@ int main(void) {
     glfwSetCursorPosCallback(window, mouseCallback);
     glfwSetKeyCallback(window, keyCallback);
 
+	glEnable(GL_DEPTH_TEST);
+
     while (!glfwWindowShouldClose(window)){
     	if (WIRED_MODE)
     		glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
@@ -188,8 +172,8 @@ int main(void) {
     	mainShader.uniformMatrix4f(eyeMatrixLocation, mainCamera.getEyeMatrix());
     	mainShader.uniform1f(loc, glfwGetTime());
 
-    	glClearColor(.2, .4, .8, 1.);
-    	glClear(GL_COLOR_BUFFER_BIT);
+    	glClearColor(.2, .2, .2, 1.);
+    	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     	vao.bind();
     	glDrawElements(GL_TRIANGLES, idxSize, GL_UNSIGNED_INT, 0);

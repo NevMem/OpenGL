@@ -6,5 +6,6 @@ bin/*
 *.dll
 *.exe
 *.cmd
+models/*
 builder.py
 compile_settings.json

@@ -3,3 +3,4 @@
 #include "VertexArrayObject.h"
 #include "ShaderProgram.h"
 #include "Camera.h"
+#include "ModelLoader.h"

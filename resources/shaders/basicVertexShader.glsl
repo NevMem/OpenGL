@@ -7,5 +7,5 @@ uniform mat4 eyeMatrix;
 uniform float uTime;
 
 void main(){
-	gl_Position = mtrx * eyeMatrix * worldMatrix * vec4(position, 1.);	
+	gl_Position = mtrx * worldMatrix * eyeMatrix * vec4(position, 1.);	
 }

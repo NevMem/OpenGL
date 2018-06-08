@@ -4,7 +4,7 @@ using namespace std;
 
 Camera::Camera(){
 	eye = glm::vec4(0, 0, 0, 0);
-	look = glm::vec4(0, 0, -1, 1);
+	look = glm::vec4(0, 0, -1, 0);
 	up = glm::vec4(0, 1, 0, 0);
 }
 
@@ -13,7 +13,7 @@ void Camera::move(glm::vec3 m){
 }
 
 float *Camera::getEyeMatrix(){
-	lookAtMatrix = glm::lookAt(glm::vec3(eye), glm::vec3(look), glm::vec3(up));
+	lookAtMatrix = glm::lookAt(glm::vec3(eye), glm::vec3(eye + look), glm::vec3(up));
 	return &lookAtMatrix[0][0];
 }
 

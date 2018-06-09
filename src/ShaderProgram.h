@@ -21,6 +21,7 @@ public:
 	void uniform2f(unsigned int location, float a, float b);
 	void uniform3f(unsigned int location, float a, float b, float c);
 	void uniform4f(unsigned int location, float a, float b, float c, float d);
+	void uniform1ui(unsigned int location, unsigned int value);
 
 	void uniformMatrix4f(unsigned int location, float *pointer);
 };

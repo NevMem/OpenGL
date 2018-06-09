@@ -28,3 +28,11 @@ void Camera::rotateVertical(float angle){
 	up = transform * up;
 	look = transform * look;
 }
+
+void Camera::moveForward(){
+	eye += look;
+}
+
+void Camera::moveBackward(){
+	eye -= look;
+}

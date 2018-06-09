@@ -4,6 +4,7 @@ include/*
 libs/*
 bin/*
 *.dll
+*.obj
 *.exe
 *.cmd
 models/*

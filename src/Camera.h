@@ -17,6 +17,8 @@ public:
 	~Camera(){}
 
 	void move(glm::vec3 m);
+	void moveForward();
+	void moveBackward();
 	void rotateHorizontal(float angle);
 	void rotateVertical(float angle);
 

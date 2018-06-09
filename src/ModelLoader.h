@@ -2,9 +2,10 @@
 #include <vector>
 #include <string>
 #include <fstream>
+#include "Model.h"
 using namespace std;
 
 class ModelLoader {
 public:
-    static pair < vector < float >, vector < unsigned int > > loadModel(string filename);
+    static Model loadModel(string filename);
 };

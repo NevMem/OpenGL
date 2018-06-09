@@ -61,10 +61,10 @@ void mouseCallback(GLFWwindow *window, double xpos, double ypos){
 
 void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods){
 	if(key == GLFW_KEY_W && (action == GLFW_PRESS || action == GLFW_REPEAT)){
-		mainCamera.move(glm::vec3(0, 0, -.1));	
+		mainCamera.moveForward();	
 	}
 	if(key == GLFW_KEY_S && (action == GLFW_PRESS || action == GLFW_REPEAT)){
-		mainCamera.move(glm::vec3(0, 0, .1));
+		mainCamera.moveBackward();
 	}
 	if(key == GLFW_KEY_RIGHT && (action == GLFW_PRESS || action == GLFW_REPEAT)){
 		mainCamera.rotateHorizontal(-acos(-1) / 36);
@@ -83,22 +83,19 @@ void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods
 glm::mat4 projectionMatrix, worldMatrix, eyeMatrix;
 
 int main(int argc, char **argv) {
-	auto model = ModelLoader::loadModel("models/monkey.obj");
-	cout << model.first.size() << ' ' << model.second.size() << endl;
+	auto model = ModelLoader::loadModel("resources/models/texcube.obj");
 
-	vr = new float[model.first.size()];
-	vrSize = model.first.size();
+	auto mapping = model.createMapping();
+	for(auto el: mapping)
+		cout << el.first << ' ' << el.second << endl;
 
-	idx = new unsigned int[model.second.size()];
-	idxSize = model.second.size();
+	auto buffers = model.createBuffers();
 
-	for(int i = 0;i < model.first.size();i++){
-		vr[i] = model.first[i];
-	}
+	vr = buffers.first.first;
+	vrSize = buffers.first.second;
 
-	for(int i = 0;i < model.second.size();i++){
-		idx[i] = model.second[i];
-	}
+	idx = buffers.second.first;
+	idxSize = buffers.second.second;
 
     GLFWwindow* window;
     if (!glfwInit())
@@ -138,10 +135,13 @@ int main(int argc, char **argv) {
     ib.bufferData(idx, idxSize);
 
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(0 * sizeof(float)));
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(0 * sizeof(float)));
 
 	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+
+	glEnableVertexAttribArray(2);
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
 
     vao.unbind();
 

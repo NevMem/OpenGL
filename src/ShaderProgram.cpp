@@ -115,6 +115,6 @@ void ShaderProgram::uniformMatrix4f(unsigned int location, float *pointer){
 	glUniformMatrix4fv(location, 1, false, pointer);
 }
 
-void ShaderProgram::uniform1ui(unsigned int location, unsigned int value){
-	glUniform1ui(location, value);
+void ShaderProgram::uniform1i(unsigned int location, int value){
+	glUniform1i(location, value);
 }

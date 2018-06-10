@@ -1,7 +1,7 @@
 glfw-3.2.1/*
 glfw-build/*
 include/*
-libs/*
+/libs/*
 bin/*
 *.dll
 *.obj
@@ -11,3 +11,4 @@ resources/textures/*
 models/*
 builder.py
 compile_settings.json
+/.vscode/settings.json

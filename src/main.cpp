@@ -129,8 +129,10 @@ tuple < int, int, unsigned char* > loadTextureBMP(string filename){
 	cout << "number of bit per pixel: " << numberOfBitPerPixel << endl;
 
 	unsigned char *buffer = new unsigned char[imageSize];
-	if(fread(buffer, imageSize, 1, f) != imageSize){
+	int checkLengthErr = fread(buffer, 1, imageSize, f);
+	if(checkLengthErr != imageSize){
 		cerr << "Error while reading data" << endl;
+		cout << imageSize << ' ' << checkLengthErr << endl;
 	}
 
 	fclose(f);
@@ -153,11 +155,24 @@ tuple < int, int, unsigned char* > loadTextureBMP(string filename){
 	return { height, width, res };
 }
 
+void GLAPIENTRY MessageCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam){
+	fprintf(stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n", (type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : ""), type, severity, message);
+}
+
+void errorWriter(){
+	unsigned int err;
+	while((err = glGetError()) != GL_NO_ERROR){
+		cout << endl;
+		cout << "error found" << endl; 
+		cout << "type: " << hex << err << dec << endl;
+		cout << endl;
+	}
+}
+
 int main(int argc, char **argv) {
 	auto model = ModelLoader::loadModel("resources/models/texcube.obj");
 
 	auto mapping = model.createMapping();
-
 	auto buffers = model.createBuffers();
 
 	vr = buffers.first.first;
@@ -175,13 +190,19 @@ int main(int argc, char **argv) {
         glfwTerminate();
         return -1;
     }
+
+	cout << "GLFW window created" << endl;
     
     if(glewInit() != GLEW_OK){
     	cout << "glew error" << endl;
     	return -1;
     }
 
+	cout << "GLEW inited" << endl;
     cout << glGetString(GL_VERSION) << endl;
+
+	glEnable(GL_DEBUG_OUTPUT); // TODO:
+	glDebugMessageCallback(MessageCallback, 0);
 
     ShaderProgram mainShader;
     mainShader.initByFiles("resources/shaders/basicVertexShader.glsl", "resources/shaders/basicFragmentShader.glsl");
@@ -213,6 +234,11 @@ int main(int argc, char **argv) {
 	glEnableVertexAttribArray(2);
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
 
+    vao.unbind();
+
+    vb.unbind();
+    ib.unbind();
+
 	auto textureData = loadTextureBMP("resources/textures/texture.bmp");
 	unsigned int texture = 0;
 	glGenTextures(1, &texture);
@@ -224,11 +250,6 @@ int main(int argc, char **argv) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	glActiveTexture(GL_TEXTURE0);
 
-    vao.unbind();
-
-    vb.unbind();
-    ib.unbind();
-
     double aspectRatio = (double) DEFAULT_SCREEN_WIDTH / DEFAULT_SCREEN_HEIGHT;
 
     projectionMatrix = glm::perspective(45.0f, (float)aspectRatio, .1f, 1000.f);
@@ -237,7 +258,7 @@ int main(int argc, char **argv) {
     mainShader.start();
 	mainShader.uniformMatrix4f(matrixLocation, &projectionMatrix[0][0]);	
 	mainShader.uniformMatrix4f(worldMatrixLocation, &worldMatrix[0][0]);
-	mainShader.uniform1ui(txLocation, 0);
+	mainShader.uniform1i(txLocation, (unsigned int)0);
     mainShader.stop();
 
     glfwSetMouseButtonCallback(window, mouseButtonCallback);
@@ -246,6 +267,7 @@ int main(int argc, char **argv) {
 
 	glEnable(GL_DEPTH_TEST);
 
+	cout << "Starting main loop" << endl;
     while (!glfwWindowShouldClose(window)){
     	if (WIRED_MODE)
     		glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );

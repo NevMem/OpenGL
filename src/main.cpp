@@ -19,16 +19,6 @@ int vrSize = 0;
 unsigned int *idx;
 int idxSize = 0;
 
-void value3f(float *location, float a, float b, float c){
-	*location = a;
-	*(location + 1) = b;
-	*(location + 2) = c;
-}
-
-void value1ui(unsigned int *location, unsigned int value){
-	*location = value;
-}
-
 Camera mainCamera;
 bool isDragging = false;
 double dragX, dragY;

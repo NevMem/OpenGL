@@ -4,3 +4,4 @@
 #include "ShaderProgram.h"
 #include "Camera.h"
 #include "ModelLoader.h"
+#include "Texture.h"

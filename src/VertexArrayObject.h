@@ -4,10 +4,9 @@ class VertexArrayObject {
 private:
 	unsigned int id;
 public: 
-	VertexArrayObject(){}
-	~VertexArrayObject(){}
+	VertexArrayObject();
+	~VertexArrayObject();
 
-	void init();
 	void bind();
 	void unbind();
 };

@@ -14,7 +14,7 @@ private:
 
 public:
 	Camera();
-	~Camera(){}
+	~Camera();
 
 	void move(glm::vec3 m);
 	void moveForward();

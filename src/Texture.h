@@ -10,8 +10,8 @@ private:
     unsigned int id;
 
 public:
-    Texture(){};
-    ~Texture(){};
+    Texture();
+    ~Texture();
 
     void loadFromBMP(string filename);
     void activeTexture0();

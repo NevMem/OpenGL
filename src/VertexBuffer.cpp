@@ -4,8 +4,16 @@
 #include <GLFW/glfw3.h>
 using namespace std;
 
-void VertexBuffer::init() {
+VertexBuffer::VertexBuffer() {
+	cout << "constructing vertex buffer" << endl;
 	glGenBuffers(1, &id);
+	cout << "completed" << endl;
+}
+
+VertexBuffer::~VertexBuffer(){
+	cout << "deconstructing vertex buffer" << endl;
+	glDeleteBuffers(1, &id);
+	cout << "completed" << endl;
 }
 
 void VertexBuffer::bufferData(float *data, int length){

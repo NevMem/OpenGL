@@ -1,6 +1,18 @@
 #include "Texture.h"
 using namespace std;
 
+Texture::Texture(){
+	cout << "constructing texture" << endl;
+	cout << "empty" << endl;
+	cout << "completed" << endl;
+}
+
+Texture::~Texture(){
+	cout << "deconstructing texture" << endl;
+	cout << "empty" << endl;
+	cout << "completed" << endl;
+}
+
 tuple < int, int, unsigned char* > loadTextureBMP(string filename){
 	unsigned char *res;
 	int height, width;

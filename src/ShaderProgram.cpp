@@ -6,6 +6,17 @@
 #include <GLFW/glfw3.h>
 using namespace std;
 
+ShaderProgram::ShaderProgram(){
+	cout << "constructing shader program" << endl;
+	cout << "completed" << endl;
+}
+
+ShaderProgram::~ShaderProgram(){
+	cout << "deconstructing shader program" << endl;
+	glDeleteProgram(id);
+	cout << "completed" << endl;
+}
+
 unsigned int CompileShader(unsigned int shaderType, string shaderText){
 	unsigned int shader = glCreateShader(shaderType);
 	const char *src = shaderText.c_str();

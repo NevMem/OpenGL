@@ -1,15 +1,14 @@
 #include "Chunk.h"
 using namespace std;
 
-int CHUNK_WIDTH = 1;
-int CHUNK_HEIGHT = 10;
+int CHUNK_WIDTH = 16;
+int CHUNK_HEIGHT = 32;
 
-void cube(int x, int y, int z, float *vr, unsigned int *idx, int offset, pair < pair < float*, int >, pair < unsigned int*, int > > buffers){
-    cout << offset << endl;
+void cube(int x, int z, int y, float *vr, unsigned int *idx, int offset, pair < pair < float*, int >, pair < unsigned int*, int > > buffers){
     for(int i = 0;i < buffers.first.second / 8;i++){
-        *(vr + i * 8 + 0) = buffers.first.first[i * 8 + 0] + x;
-        *(vr + i * 8 + 1) = buffers.first.first[i * 8 + 1] + y;
-        *(vr + i * 8 + 2) = buffers.first.first[i * 8 + 2] + z;
+        *(vr + i * 8 + 0) = (buffers.first.first[i * 8 + 0] + 1.) / 2. + x;
+        *(vr + i * 8 + 1) = (buffers.first.first[i * 8 + 1] + 1.) / 2. + y;
+        *(vr + i * 8 + 2) = (buffers.first.first[i * 8 + 2] + 1.) / 2. + z;
 
         *(vr + i * 8 + 3) = buffers.first.first[i * 8 + 3];
         *(vr + i * 8 + 4) = buffers.first.first[i * 8 + 4];
@@ -35,9 +34,6 @@ Chunk::Chunk(){
 
     generateChunk();
 
-    vbo.init();
-    ibo.init();
-
     auto cubeModel = ModelLoader::loadModel("resources/models/texcube.obj");
     auto buffers = cubeModel.createBuffers();
 
@@ -58,24 +54,9 @@ Chunk::Chunk(){
         }
     }
 
-    for(int i = 0;i < vertexBufferLength;i++){
-        if(i % 288 == 0)
-            cout << endl;
-        if(i % 8 < 3){
-            cout << vr[i] << ' ';
-        }
-        if(i % 8 == 2)
-            cout << endl;
-    }
-
-    for(int i = 0;i < indexBufferLength;i++){
-        cout << idx[i] << endl;
-    }
-
     vbo.bufferData(vr, vertexBufferLength);
     ibo.bufferData(idx, indexBufferLength);
 
-    vao.init();
     vao.bind();
 
     vbo.bind();

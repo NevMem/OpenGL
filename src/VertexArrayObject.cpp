@@ -5,8 +5,16 @@
 #include <GLFW/glfw3.h>
 using namespace std;
 
-void VertexArrayObject::init(){
+VertexArrayObject::VertexArrayObject(){
+	cout << "constructing VAO" << endl;
 	glGenVertexArrays(1, &id);
+	cout << "completed" << endl;
+}
+
+VertexArrayObject::~VertexArrayObject(){
+	cout << "deconstruction VAO" << endl;
+	glDeleteVertexArrays(1, &id);
+	cout << "completed" << endl;
 }
 
 void VertexArrayObject::bind(){

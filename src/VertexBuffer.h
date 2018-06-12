@@ -5,10 +5,9 @@ private:
 	unsigned int id;
 
 public:
-	VertexBuffer(){}
-	~VertexBuffer(){}
+	VertexBuffer();
+	~VertexBuffer();
 
-	void init();
 	void bufferData(float *data, int length);
 	void bind();
 	void unbind();

@@ -3,9 +3,17 @@
 using namespace std;
 
 Camera::Camera(){
+	cout << "constructing camera" << endl;
 	eye = glm::vec4(0, 0, 0, 0);
 	look = glm::vec4(0, 0, -1, 0);
 	up = glm::vec4(0, 1, 0, 0);
+	cout << "completed" << endl;
+}
+
+Camera::~Camera(){
+	cout << "deconstructing camera" << endl;
+	cout << "empty" << endl;
+	cout << "completed" << endl;
 }
 
 void Camera::move(glm::vec3 m){

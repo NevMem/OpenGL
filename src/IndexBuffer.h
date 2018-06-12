@@ -5,10 +5,9 @@ private:
 	unsigned int id;
 
 public:
-	IndexBuffer(){}
-	~IndexBuffer(){}
+	IndexBuffer();
+	~IndexBuffer();
 
-	void init();
 	void bufferData(unsigned int *data, int length);
 	void bind();
 	void unbind();

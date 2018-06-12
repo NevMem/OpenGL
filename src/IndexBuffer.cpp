@@ -4,8 +4,16 @@
 #include <GLFW/glfw3.h>
 using namespace std;
 
-void IndexBuffer::init(){
+IndexBuffer::IndexBuffer(){
+	cout << "constructing index buffer" << endl;
 	glGenBuffers(1, &id);
+	cout << "completed" << endl;
+}
+
+IndexBuffer::~IndexBuffer(){
+	cout << "deconstructing index buffer" << endl;
+	glDeleteBuffers(1, &id);
+	cout << "completed" << endl;
 }
 
 void IndexBuffer::bufferData(unsigned int *data, int length){

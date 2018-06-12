@@ -87,17 +87,6 @@ void errorWriter(){
 }
 
 int main(int argc, char **argv) {
-	auto model = ModelLoader::loadModel("resources/models/texcube.obj");
-	auto buffers = model.createBuffers();
-
-	//vr = buffers.first.first;
-	//vrSize = buffers.first.second;
-
-	//idx = buffers.second.first;
-	//idxSize = buffers.second.second;
-
-	cout << vrSize << ' ' << idxSize << endl;
-
     GLFWwindow* window;
     if (!glfwInit())
         return -1;
@@ -129,32 +118,6 @@ int main(int argc, char **argv) {
     auto worldMatrixLocation = mainShader.getUniformLocation("worldMatrix");
     auto eyeMatrixLocation = mainShader.getUniformLocation("eyeMatrix");
 	auto txLocation = mainShader.getUniformLocation("tx");
-
-    /*VertexArrayObject vao;
-    vao.init();
-    vao.bind();
-
-    VertexBuffer vb = VertexBuffer();
-    vb.init();
-    vb.bufferData(vr, vrSize);
-
-    IndexBuffer ib = IndexBuffer();
-    ib.init();
-    ib.bufferData(idx, idxSize);
-
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(0 * sizeof(float)));
-
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-
-	glEnableVertexAttribArray(2);
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-
-    vao.unbind();
-
-    vb.unbind();
-    ib.unbind();*/
 
     double aspectRatio = (double) DEFAULT_SCREEN_WIDTH / DEFAULT_SCREEN_HEIGHT;
 
@@ -193,9 +156,6 @@ int main(int argc, char **argv) {
     	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		chunk.render();
-
-    	//vao.bind();
-    	//glDrawElements(GL_TRIANGLES, idxSize, GL_UNSIGNED_INT, 0);
 
     	mainShader.stop();
 

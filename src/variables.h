@@ -1,3 +1,5 @@
+#pragma once
+
 int DEFAULT_SCREEN_WIDTH = 1600;
 int DEFAULT_SCREEN_HEIGHT = 900;
 bool WIRED_MODE = false;

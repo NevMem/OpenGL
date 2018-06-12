@@ -88,15 +88,15 @@ void errorWriter(){
 
 int main(int argc, char **argv) {
 	auto model = ModelLoader::loadModel("resources/models/texcube.obj");
-
-	auto mapping = model.createMapping();
 	auto buffers = model.createBuffers();
 
-	vr = buffers.first.first;
-	vrSize = buffers.first.second;
+	//vr = buffers.first.first;
+	//vrSize = buffers.first.second;
 
-	idx = buffers.second.first;
-	idxSize = buffers.second.second;
+	//idx = buffers.second.first;
+	//idxSize = buffers.second.second;
+
+	cout << vrSize << ' ' << idxSize << endl;
 
     GLFWwindow* window;
     if (!glfwInit())
@@ -130,7 +130,7 @@ int main(int argc, char **argv) {
     auto eyeMatrixLocation = mainShader.getUniformLocation("eyeMatrix");
 	auto txLocation = mainShader.getUniformLocation("tx");
 
-    VertexArrayObject vao;
+    /*VertexArrayObject vao;
     vao.init();
     vao.bind();
 
@@ -154,7 +154,7 @@ int main(int argc, char **argv) {
     vao.unbind();
 
     vb.unbind();
-    ib.unbind();
+    ib.unbind();*/
 
     double aspectRatio = (double) DEFAULT_SCREEN_WIDTH / DEFAULT_SCREEN_HEIGHT;
 
@@ -178,6 +178,9 @@ int main(int argc, char **argv) {
 	texture.activeTexture0();
 
 	cout << "Starting main loop" << endl;
+
+	Chunk chunk;
+
     while (!glfwWindowShouldClose(window)){
     	if (WIRED_MODE)
     		glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
@@ -189,8 +192,10 @@ int main(int argc, char **argv) {
     	glClearColor(.2, .2, .2, 1.);
     	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    	vao.bind();
-    	glDrawElements(GL_TRIANGLES, idxSize, GL_UNSIGNED_INT, 0);
+		chunk.render();
+
+    	//vao.bind();
+    	//glDrawElements(GL_TRIANGLES, idxSize, GL_UNSIGNED_INT, 0);
 
     	mainShader.stop();
 
